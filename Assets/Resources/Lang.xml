@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<languages>
+
+	<Spanish>
+		<string name="intro_01">¿Alguna vez has hecho algo tan terrible que necesitaras volver atrás en el tiempo?</string>
+		<string name="intro_02">El hombre es el más misterioso y el más desconcertante de los objetos descubiertos por la ciencia.</string>
+		<string name="intro_03">He ido demasiado lejos.</string>
+		<string name="intro_04">Y nada de lo que he hecho para arreglarlo ha servido para algo.</string>
+		<string name="intro_05">Solo me queda una cosa por hacer...</string>
+		<string name="intro_06">Espero que algún día puedas perdonarme</string>
+
+		<string name="Hab02_01">...¿Eh? ¿Dónde estoy?</string>
+		<string name="Hab02_02">Científico moribundo:
+Gracias a Dios, por fin despiertas.</string>
+		<string name="Hab02_03">¿Qu… quién eres? ¿Qué es todo esto?</string>
+		<string name="Hab02_04">Científico moribundo:
+No hay tiempo para explicaciones… ¡AARGHH!</string>
+		<string name="Hab02_05">Tienes que salir de aquí.</string>
+
+
+		<string name="Hab02_door">La puerta está cerrada, maldición.</string>
+		<string name="Hab02_clock01">Este reloj no funciona.</string>
+		<string name="Hab02_clock02">Está parado en las 3 y media.</string>
+
+		<string name="Hab02_06">Científico moribundo:
+Toma la llave de la habitación. Ugh…</string>
+		<string name="Hab02_07">¿Por qué no vienes?</string>
+		<string name="Hab02_08">Científico moribundo:
+Es demasiado tarde para mí. ¡Vamos, vamos!
+</string>
+
+		<string name="Hab03_01">Tengo que buscar respuestas.</string>
+		<string name="Hab03_safe">Una caja fuerte… 4 dígitos.</string>
+		<string name="Hab03_door">No puede ser ¡Otra puerta cerrada!</string>
+
+		<string name="inventory_full">El inventario está lleno</string>
+
+	</Spanish>
+
+	<English>
+		<string name="scanner_denied_1">Have you ever done something so terrible that you need to go back in time?</string>
+		<string name="scanner_denied_2">I must find a way to hijack the scanner</string>
+		<string name="scanner_granted_3">Access Granted</string>
+		<string name="inventory_full">The inventory is full</string>
+		<string name="Hab02_02">Dying man:
+At last, you are awake</string>
+	</English>
+
+</languages>
