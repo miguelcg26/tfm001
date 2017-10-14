@@ -1,0 +1,164 @@
+fileFormatVersion: 2
+guid: c1f01d35a26eaf24494a74ff02d5e9cb
+timeCreated: 1507821744
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Copa
+    100002: //RootNode
+    100004: Hojas
+    100006: Object001
+    100008: Object002
+    100010: Object003
+    100012: Object004
+    100014: Object007
+    100016: Object008
+    100018: Object009
+    100020: Object010
+    100022: Rama001
+    100024: Rama002
+    100026: Rama004
+    100028: Rama005
+    100030: "Ra\xEDces"
+    100032: Suelo
+    100034: Tronco
+    400000: Copa
+    400002: //RootNode
+    400004: Hojas
+    400006: Object001
+    400008: Object002
+    400010: Object003
+    400012: Object004
+    400014: Object007
+    400016: Object008
+    400018: Object009
+    400020: Object010
+    400022: Rama001
+    400024: Rama002
+    400026: Rama004
+    400028: Rama005
+    400030: "Ra\xEDces"
+    400032: Suelo
+    400034: Tronco
+    2300000: Copa
+    2300002: Hojas
+    2300004: Object001
+    2300006: Object002
+    2300008: Object003
+    2300010: Object004
+    2300012: Object007
+    2300014: Object008
+    2300016: Object009
+    2300018: Object010
+    2300020: Rama001
+    2300022: Rama002
+    2300024: Rama004
+    2300026: Rama005
+    2300028: "Ra\xEDces"
+    2300030: Suelo
+    2300032: Tronco
+    3300000: Copa
+    3300002: Hojas
+    3300004: Object001
+    3300006: Object002
+    3300008: Object003
+    3300010: Object004
+    3300012: Object007
+    3300014: Object008
+    3300016: Object009
+    3300018: Object010
+    3300020: Rama001
+    3300022: Rama002
+    3300024: Rama004
+    3300026: Rama005
+    3300028: "Ra\xEDces"
+    3300030: Suelo
+    3300032: Tronco
+    4300000: "Ra\xEDces"
+    4300002: Copa
+    4300004: Tronco
+    4300006: Suelo
+    4300008: Hojas
+    4300010: Object001
+    4300012: Rama001
+    4300014: Object002
+    4300016: Object003
+    4300018: Object004
+    4300020: Rama002
+    4300022: Object007
+    4300024: Object008
+    4300026: Rama004
+    4300028: Object009
+    4300030: Object010
+    4300032: Rama005
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

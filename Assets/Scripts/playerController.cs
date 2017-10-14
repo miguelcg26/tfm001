@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-public class playerController : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
 	//public GameObject attractorJump;
 	[HideInInspector]
@@ -10,10 +10,9 @@ public class playerController : MonoBehaviour
 	[HideInInspector]
 	public Animator anim;
 
-	public cameraController camController;
+	public CameraController camController;
 	
 	public Transform camRig;
-	Transform pivot;
 	public Transform character;
 	//[SerializeField]
 	public float moveSpeed = 40f;
@@ -24,9 +23,7 @@ public class playerController : MonoBehaviour
 	//[SerializeField]
 	public float turnSpeedAir = 0.5f;
 	//float sprintInput;
-	
-	[SerializeField]
-	float jumpForce = 70f;
+
 	
 	public float horizontal;
 	public float vertical;
@@ -51,8 +48,12 @@ public class playerController : MonoBehaviour
 	public Vector3 normalDwn;
 	public Vector3 normalUp;
 	public Vector3 normalFwd;
-	public bool cc;
+	public bool onTrunk;
+	public bool onBranch;
+	public bool onSubBranch;
+	public bool isVertical;
 	public bool isJumping;
+	public bool obstacleFwd;
 	
 	Vector3 currentRot;
 	Vector3 targetRot;
@@ -71,6 +72,8 @@ public class playerController : MonoBehaviour
 	public CapsuleCollider capCol;
 	public PhysicMaterial noFriction;
 	public PhysicMaterial friction;
+	public bool freeFall;
+	public float distanceDwn;
 
 
 	void Awake()
@@ -81,7 +84,6 @@ public class playerController : MonoBehaviour
 
 		rigidBody = GetComponent<Rigidbody>();
 		//camRig = GameObject.FindWithTag("MainCamera").transform.parent.parent;
-		pivot = GameObject.Find("PlayerCamera").transform.parent;
 		//cam = GameObject.FindWithTag("MainCamera").transform.parent.parent.GetComponent<cameraController>();
 		//capCol = GetComponent<CapsuleCollider>();
 		anim = GetComponent<Animator>();
@@ -235,19 +237,10 @@ public class playerController : MonoBehaviour
 		//}
 	}
 
-	public void Jump2() {   		
-		if (grounded)	
-		if (GameManager.GM.charPos == GameManager.CharPos.TOP) {
-			//rigidBody.AddForce(Vector3.up * jumpForce + transform.up * jumpForce, ForceMode.Impulse);
-			anim.SetTrigger("Jump2");
-			StartCoroutine (AttractorChangerJump());
-		}
-	}
-	
 	
 	void FixedUpdate() {	
 
-		anim.SetBool("Grounded", grounded);	
+		//anim.SetBool("Grounded", grounded);	
 
 		if (SceneController.SC.blockAction) {
 			return;
@@ -262,17 +255,20 @@ public class playerController : MonoBehaviour
 						//}
 
 						//ROTATION
-						transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (dir), turnSpeed * Time.deltaTime);
+
+					    //transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.LookRotation (dir), turnSpeed * Time.deltaTime);
 
 						//if (!cc)
 						//character.transform.rotation =  Quaternion.Slerp (character.transform.rotation, Quaternion.FromToRotation (character.transform.up, normalUp) * character.transform.rotation, 50 * Time.deltaTime);
-						transform.rotation =  Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 50 * Time.deltaTime);
-
+						
 						//else
 						//transform.rotation =  Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalFwd) * transform.rotation, 50 * Time.deltaTime);
 
 					}
-					character.localRotation = Quaternion.Slerp (character.localRotation, Quaternion.Euler (0, angle, 0), turnSpeed * Time.deltaTime);
+			character.localRotation = Quaternion.Slerp (character.localRotation, Quaternion.Euler (0, angle, 0), turnSpeed * Time.deltaTime);
+
+			transform.rotation =  Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 10f * Time.deltaTime);
+
 
 				} else {
 					if (Mathf.Abs (horizontal) > 0.0f || (Mathf.Abs (vertical) > 0.0f)) {
@@ -330,9 +326,10 @@ public class playerController : MonoBehaviour
 		}
 
 		if (grounded) {
-			rigidBody.AddForce (-transform.up * 1000);
+			rigidBody.AddForce (-normalUp * 1000);
 		} else {
 
+			//rigidBody.AddForce (-normalUp * 1000);
 			rigidBody.AddForce (-Vector3.up * 100);
 
 			transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.Euler (transform.rotation.x, transform.rotation.y, transform.rotation.z /* cc*/), 1 * Time.deltaTime);
@@ -348,25 +345,23 @@ public class playerController : MonoBehaviour
 
 		RaycastHit hitDwn;
 
-		if (Physics.Raycast (transform.position + transform.up * 0.7f, transform.forward, out hitFwd, rayDownDistance)) {
+		RaycastHit distDwn;
+
+		if (Physics.Raycast (transform.position + transform.up * 0.2f, character.transform.forward, out hitFwd, 1.5f)) {
 			//Debug.Log(hitDwn.transform.tag);
 
-			if (hitFwd.transform.tag == ("Branch01")) {
-	//			GameManager.GM.currentAttractor = GameManager.GM.attractors [0];
-//				GameManager.GM.currentAttractor.GetComponent<followTarget1> ().onBranch = true;
-			} else if (hitFwd.transform.tag == ("Branch02")) {
-				//GameManager.GM.currentAttractor = GameManager.GM.attractors [1];
-				//GameManager.GM.currentAttractor.GetComponent<followTarget1> ().onBranch = true;
-			} else if (hitFwd.transform.tag == ("Trunk")) {
-				//GameManager.GM.currentAttractor = GameManager.GM.attractors [2];
-				//GameManager.GM.currentAttractor.transform.position = new Vector3 (GameManager.GM.currentAttractor.transform.localPosition.x,
-					//transform.position.y,
-					//GameManager.GM.currentAttractor.transform.localPosition.z);
-				//GameManager.GM.currentAttractor.GetComponent<followTarget1> ().onBranch = true;
+			if (hitFwd.transform.tag != ("Branch") && hitFwd.transform.tag != ("Trunk")) {
+				obstacleFwd = true;
+			} else {
+				obstacleFwd = false;
+				normalFwd = hitFwd.normal;
 			}
-			normalFwd = hitFwd.normal;
 
+		} else {
+			obstacleFwd = false;
 		}
+
+
 
 			if (Physics.Raycast (transform.position, -transform.up, out hitDwn, rayDownDistance)) {
 				//Debug.Log(hitDwn.transform.tag);
@@ -389,18 +384,29 @@ public class playerController : MonoBehaviour
 				//normalUp = cont [0].normal;
 				normalUp = hitDwn.normal;
 				//Debug.Log (hitDwn.collider.name);
-				Debug.DrawRay(transform.position + transform.up * 2, normalUp, Color.magenta);
+				//Debug.DrawRay(transform.position + transform.up * 2, normalUp, Color.magenta);
 				} 
 
 		}
+
+		Physics.Raycast (transform.position, -Vector3.up, out distDwn);
+		distanceDwn = distDwn.distance;
+		if (distanceDwn > 6) {
+			freeFall = true;
+		} else {
+		}
+
 	}
 		
 
 	void OnCollisionEnter(Collision col){
-		//if (col.collider.tag == "Branch02") {
+		if (col.collider.tag == "Branch") {
+
+			freeFall = false;
+
+		anim.SetBool("Grounded", true);
 			//if (!cc) {
-				cc = true;
-		StartCoroutine (AttractorChangerJump());
+		StartCoroutine (AttractorChangerBranch());
 		/*
 			float countercc = 0;
 			countercc += 1f * Time.deltaTime;
@@ -416,45 +422,119 @@ public class playerController : MonoBehaviour
 				//GameManager.GM.currentAttractor = GameManager.GM.attractors [1];
 				//GameManager.GM.currentAttractor.GetComponent<followTarget1> ().onBranch = true;
 				
+				//transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 50 * Time.deltaTime);
+
+
+			//transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 5 * Time.deltaTime);
+
+			if (onTrunk && !onBranch || onSubBranch && !onBranch) {
 				ContactPoint[] cont = col.contacts;
 				normalUp = cont [0].normal;
-				//transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 50 * Time.deltaTime);
+				Debug.Log (col.collider.tag);
 				transform.rotation = Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation;
+			}
+			
 				rigidBody.drag = 10;
 				rigidBody.useGravity = false;
-			//}
-		//}
-		/*
-		if (col.collider.tag == "Trunk") {
-		//grounded = true;
-		//rigidBody.velocity = Vector3.zero;
-		//GameManager.GM.currentAttractor = GameManager.GM.attractors [1];
-		//GameManager.GM.currentAttractor.GetComponent<followTarget1> ().onBranch = true;
-		//Debug.Log ("Bingo");
-		//ContactPoint[] cont = col.contacts;
-		//normalUp = cont[0].normal;	
-		cc = true;
-		//transform.rotation =  Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalFwd) * transform.rotation, 50 * Time.deltaTime);
-			transform.rotation = Quaternion.FromToRotation (transform.up, normalFwd) * transform.rotation;
-		rigidBody.drag = 10;
-		rigidBody.useGravity = false;
+
+			}
+
+		if (col.collider.tag == "SubBranch") {
+
+			freeFall = false;
+			anim.SetBool("Grounded", true);
+			//if (!cc) {
+			StartCoroutine (AttractorChangerSubBranch());
+			/*
+			float countercc = 0;
+			countercc += 1f * Time.deltaTime;
+			if (countercc > 1) {
+				cc = false;
+				countercc = 0;
+			}
+
+			*/	
+			isJumping = false;
+			grounded = true;
+			rigidBody.velocity = Vector3.zero;
+			//GameManager.GM.currentAttractor = GameManager.GM.attractors [1];
+			//GameManager.GM.currentAttractor.GetComponent<followTarget1> ().onBranch = true;
+
+			//transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 50 * Time.deltaTime);
+
+
+			//transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 5 * Time.deltaTime);
+
+			if (onTrunk && !onSubBranch || onBranch && !onSubBranch) {
+				ContactPoint[] cont = col.contacts;
+				normalUp = cont [0].normal;
+				Debug.Log (col.collider.tag);
+				transform.rotation = Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation;
+			}
+
+			rigidBody.drag = 10;
+			rigidBody.useGravity = false;
+
 		}
-		*/
+
+		if (col.collider.tag == "Trunk") {
+
+			freeFall = false;
+			anim.SetBool("Grounded", true);
+			//if (!cc) {
+			StartCoroutine (AttractorChangerTrunk());
+			/*
+			float countercc = 0;
+			countercc += 1f * Time.deltaTime;
+			if (countercc > 1) {
+				cc = false;
+				countercc = 0;
+			}
+
+			*/	
+			isJumping = false;
+			grounded = true;
+			rigidBody.velocity = Vector3.zero;
+			//GameManager.GM.currentAttractor = GameManager.GM.attractors [1];
+			//GameManager.GM.currentAttractor.GetComponent<followTarget1> ().onBranch = true;
+
+			//transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 50 * Time.deltaTime);
+
+
+			//transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation, 5 * Time.deltaTime);
+
+			if (!onTrunk && onBranch || !onTrunk && onSubBranch) {
+				ContactPoint[] cont = col.contacts;
+				normalUp = cont [0].normal;
+				Debug.Log (col.collider.tag);
+				transform.rotation = Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation;
+
+			}
+
+			rigidBody.drag = 10;
+			rigidBody.useGravity = false;
+
+		}
 	}
 
-	void OnCollisionExit(){
-		if (isJumping) {
-			//GameManager.GM.currentAttractor = null;
-			rigidBody.useGravity = true;
-			grounded = false;
-			rigidBody.drag = 2;
+	void OnCollisionExit(Collision col){
 
+		if (col.collider.tag == "Branch" || col.collider.tag == "Trunk" || col.collider.tag == "SubBranch") {
+			if (isJumping) {
+				anim.SetBool ("Grounded", false);	
+				//GameManager.GM.currentAttractor = null;
+				rigidBody.useGravity = true;
+				grounded = false;
+				rigidBody.drag = 2;
+				Debug.Log ("vv");
+
+			}
 		}
 
 	}
 
 	void CheckPosition () {
-		//if (GameManager.GM.currentAttractor != GameManager.GM.attractors [2]) {
+		if (!isVertical) {
 			if (bodyUp.y > -0.09f) {	//TOP
 				if (bodyUp.x < 0.4f && bodyUp.x > -0.4f) {
 					GameManager.GM.charPos = GameManager.CharPos.TOP;
@@ -495,34 +575,36 @@ public class playerController : MonoBehaviour
 					GameManager.GM.charDir = GameManager.CharDir.LEFT;
 				}
 			}
-		//}else {
-		//	GameManager.GM.charPos = GameManager.CharPos.VERTICAL;
-		//	posture = 8;
-		//}
+		}else {
+			GameManager.GM.charPos = GameManager.CharPos.VERTICAL;
+			posture = 8;
+		}
 	}
 
 	void OnAnimatorMove()
 	{
 		if (SceneController.SC.blockAction) {
+			anim.SetFloat ("Speed", 0);
 			return;
 		}
-				anim.SetFloat("Speed", speed, 0.25f * Time.deltaTime, 0.25f * Time.deltaTime);
-				anim.SetFloat ("Horizontal", horizontal, Time.deltaTime, Time.deltaTime);
-				anim.SetFloat("Vertical", vertical, Time.deltaTime, Time.deltaTime);
-				anim.SetFloat("Direction", direction, Time.deltaTime, Time.deltaTime);
-				//anim.SetBool("Walking", walking);
-				//anim.SetBool("Running", running);
-				//anim.SetBool("Sprinting", sprinting);
-			
-
+		if (!obstacleFwd) {
+			anim.SetFloat ("Speed", speed, 0.25f * Time.deltaTime, 0.25f * Time.deltaTime);
+		} else {
+			anim.SetFloat ("Speed", 0);
+		}
+		anim.SetFloat ("Horizontal", horizontal, Time.deltaTime, Time.deltaTime);
+		anim.SetFloat("Vertical", vertical, Time.deltaTime, Time.deltaTime);
+		anim.SetFloat("Direction", direction, Time.deltaTime, Time.deltaTime);
+		anim.SetBool("FreeFall", freeFall);
 	}
 
 	void OnDrawGizmos()
 	{
-		Debug.DrawRay(transform.position + transform.up, dir, Color.red);
+		Debug.DrawRay(transform.position + transform.up * 2.5f, dir, Color.red);
 		Debug.DrawRay(transform.position, -transform.up * 0.2f, Color.red);
-		Debug.DrawRay(transform.position + transform.up, transform.forward * 0.5f, Color.blue);
+		Debug.DrawRay(transform.position + transform.up * 2.5f, transform.forward, Color.blue);
 		Debug.DrawRay(transform.position + transform.up * 2, normalDwn, Color.magenta);
+		Debug.DrawRay(transform.position + transform.up * 2, normalUp, Color.yellow);
 
 	}
 
@@ -544,10 +626,28 @@ public class playerController : MonoBehaviour
 
 		}
 	}
+	IEnumerator AttractorChangerBranch(){
+		isVertical = false;
+		yield return new WaitForSeconds (1f);
+		onTrunk = false;
+		onBranch = true;
+		onSubBranch = false;
+	}
 
-	IEnumerator AttractorChangerJump(){
-		yield return new WaitForSeconds (0.1f);
-		cc = false;
+	IEnumerator AttractorChangerSubBranch(){
+		isVertical = false;
+		yield return new WaitForSeconds (1f);
+		onTrunk = false;
+		onBranch = false;
+		onSubBranch = true;
+	}
+
+	IEnumerator AttractorChangerTrunk(){
+		isVertical = true;
+		yield return new WaitForSeconds (1f);
+		onTrunk = true;
+		onBranch = false;
+		onSubBranch = false;
 	}
 
 }

@@ -3,8 +3,9 @@ using System;
 using System.Collections;
 using UnityEngine.UI;
 
-public class cameraController : MonoBehaviour
+public class CameraController : MonoBehaviour
 {  
+	public GameObject endCameraPos;
 	public GameObject pivotX;
 	public GameObject pivotX2;
 	public GameObject pivotY;
@@ -12,21 +13,21 @@ public class cameraController : MonoBehaviour
 	public GameObject cam;
 	public Vector3 offset;
 
-	public playerController player;
+	PlayerController player;
 	public float turnSmooth = 5;
 
 	public float turnSpeedX = 4f;
 	public float turnSpeedY = 3f;
-	public float turnMax;
-	public float turnMin;
 	public float tiltMax = 65f;
 	public float tiltMin = 50f;
-	public float XAngle;	
-	public float YAngle;
-	public float ZAngle;
-	public float XAngle2;	
-	public float YAngle2;
-	public float ZAngle2;
+	float XAngle;	
+	float YAngle;
+	float ZAngle;
+	float XAngle2;	
+	float ZAngle2;
+
+	public bool endCamera = false;
+	float counter;
 
 	public float camDistance;
 	public float closestDistance;
@@ -35,7 +36,7 @@ public class cameraController : MonoBehaviour
 	public float y;		
 
 	void Awake() {
-		player = GameObject.FindWithTag ("Player").GetComponent<playerController> ();
+		player = GameObject.FindWithTag ("Player").GetComponent<PlayerController> ();
 	}
 	void Start() {		
 		XAngle = 0;
@@ -59,17 +60,27 @@ public class cameraController : MonoBehaviour
 	}
 
 	void LateUpdate() {   
-
-
-		pivotY.transform.localPosition = Vector3.Lerp (pivotY.transform.localPosition, offset, turnSmooth * Time.deltaTime);
-
+		
+		if (endCamera) {
+			counter += 0.5f * Time.deltaTime;
+			if (counter < 0.9f) {
+				pivotY.transform.position = Vector3.Lerp (pivotY.transform.position, endCameraPos.transform.position, counter);
+				pivotY.transform.rotation = Quaternion.Slerp (pivotY.transform.rotation, endCameraPos.transform.rotation, counter);
+			}
+		}
 
 	}
 
 	public void RotationMovement() {
+		
+		if (SceneController.SC.blockAction) {
+			return;
+		}
 
 		x = Input.GetAxis("Mouse X");
 		y = Input.GetAxis("Mouse Y");
+
+		pivotY.transform.localPosition = Vector3.Lerp (pivotY.transform.localPosition, offset, turnSmooth * Time.deltaTime);
 
 		/*
 		if (GameManager.GM.charPos == GameManager.CharPos.RIGHT_BOTTOM) {
@@ -205,10 +216,6 @@ public class cameraController : MonoBehaviour
 
 		*/
 	
-		if (SceneController.SC.blockAction) {
-			return;
-
-		}
 				XAngle += x * turnSpeedX;
 
 				YAngle += y * turnSpeedY;
@@ -218,16 +225,16 @@ public class cameraController : MonoBehaviour
 				pivotX2.transform.localRotation = Quaternion.Slerp (pivotX2.transform.localRotation, Quaternion.Euler (0, XAngle, 0), turnSmooth * Time.deltaTime);
 
 				if (player.grounded)
-					pivotY.transform.localRotation = Quaternion.Slerp (pivotY.transform.localRotation, Quaternion.Euler (YAngle + YAngle2, 0, 0), turnSmooth * Time.deltaTime);
+					pivotY.transform.localRotation = Quaternion.Slerp (pivotY.transform.localRotation, Quaternion.Euler (YAngle, 0, 0), turnSmooth * Time.deltaTime);
 				else
-					pivotY.transform.localRotation = Quaternion.Slerp (pivotY.transform.localRotation, Quaternion.Euler (YAngle + YAngle2 + 20, 0, 0), turnSmooth * Time.deltaTime);
+					pivotY.transform.localRotation = Quaternion.Slerp (pivotY.transform.localRotation, Quaternion.Euler (YAngle + 20, 0, 0), turnSmooth * Time.deltaTime);
 
 				//if (!player.grounded)
 				pivotZ.transform.localRotation = Quaternion.Slerp (pivotZ.transform.localRotation, Quaternion.Euler (0, 0, 0), turnSmooth * Time.deltaTime);
 
 				//pivotX2.transform.rotation = new Quaternion(cam.transform.rotation.x, cam.transform.rotation.y, cam.transform.rotation.z, 0);
 				if (player.grounded)
-					transform.rotation =  Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, player.normalUp) * transform.rotation, 5f * Time.deltaTime);
+					transform.rotation =  Quaternion.Slerp (transform.rotation, Quaternion.FromToRotation (transform.up, player.normalUp) * transform.rotation, 1.5f * Time.deltaTime);
 				else
 					transform.rotation = Quaternion.Slerp (transform.rotation, Quaternion.Euler (transform.rotation.x, transform.rotation.y, transform.rotation.z /* cc*/), 1 * Time.deltaTime);
 			
