@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 358ae94ddfd825c4188b1b7e1ed2e3f0
+timeCreated: 1500796890
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Libertinage
+  fontNames:
+  - Libertinage
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

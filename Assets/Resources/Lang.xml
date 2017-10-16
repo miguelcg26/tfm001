@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<languages>
+
+	<Spanish>
+		<string name="end_game">NIVEL COMPLETADO</string>
+		<string name="menu0">COMENZAR</string>
+		<string name="menu1">CONTINUAR</string>
+
+	</Spanish>
+
+	<English>
+		<string name="end_game">LEVEL COMPLETED</string>
+		<string name="menu0">START</string>
+		<string name="menu1">CONTINUE</string>
+
+	</English>
+
+</languages>
