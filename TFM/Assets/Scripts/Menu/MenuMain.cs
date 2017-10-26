@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/* CREADO POR ANTONIO VILLENA */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -95,16 +97,30 @@ public class MenuMain : MonoBehaviour {
 
 	}
 
-	public void ChangeControllerHover(GameObject newHover){
+	public void ChangeControllerHover(GameObject newHover){		
+		AudioManager.AM.PlaySound2D ("MenuSelect");
 		ES.SetSelectedGameObject (newHover);
 	}
 
 	public void StartGame(){
-		AudioManager.AM.PlaySound2D ("MenuButton");
+		AudioManager.AM.PlaySound2D ("EndLevel");
 		SceneController.SC.FadeAndLoadScene ("Level00", DataManager.DM.data.startPosition);
 	}
 
-	public void Quit() {
+	public void Continue(){
+		AudioManager.AM.PlaySound2D ("MenuButton");
+	}
+
+	public void Options(){
+		AudioManager.AM.PlaySound2D ("MenuButton");
+	}
+
+	public void Achievements(){
+		AudioManager.AM.PlaySound2D ("MenuButton");
+	}
+
+	public void Quit() {		
+		AudioManager.AM.PlaySound2D ("MenuButton");
 		Application.Quit();
 	}
 }

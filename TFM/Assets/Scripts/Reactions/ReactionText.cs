@@ -1,18 +1,28 @@
-﻿using System.Collections;
+﻿/* CREADO POR MIGUEL CASADO */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ReactionText : Reaction {
 
 	public string text;
+	public string creditsTitle;
+	public string creditsName01;
+	public string creditsName02;
 	public Color textColor;
+	public int sizeName;
+	public int sizeTitle;
+	public Vector2 position;	
+	public float duration;
 	public float additionalDisplayTime;
 
 	public enum TextPlace
 	{
 		TOP,
 		MIDDLE,
-		DOWN
+		DOWN,
+		CREDITS
 	}
 
 	public TextPlace textPlace;
@@ -33,6 +43,9 @@ public class ReactionText : Reaction {
 			break;
 		case TextPlace.DOWN:
 			TextManager.TM.DisplayMessageBottom (TranslateManager.TM.GetString(text), textColor);			//Llamada al TextManager para que se haga cargo del dibujado del texto
+			break;
+		case TextPlace.CREDITS:
+			TextManager.TM.DisplayMessageCredits (creditsTitle, creditsName01, creditsName02, textColor, sizeName, sizeTitle, position, duration);	
 			break;
 		}
 	}

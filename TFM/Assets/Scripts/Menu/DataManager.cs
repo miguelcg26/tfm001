@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/* CREADO POR MIGUEL CASADO */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,7 +46,8 @@ public class DataManager : MonoBehaviour {
 	/// </summary>
 	public void Load (){
 		//Debug Log con la ruta de guardado persistente (para poder locarlizarlo)
-		Debug.Log (Application.persistentDataPath);
+		
+		//Debug.Log (Application.persistentDataPath);
 
 		//Antes de abrir el fichero verificamos si existe
 		if (File.Exists (Application.persistentDataPath + "/" + fileName)) {
@@ -77,7 +80,9 @@ public class DataManager : MonoBehaviour {
 		}
 
 		//Si termina el foreach y llega hasta aquí, significa que no ha encontrado nada, mandamos el debug y devolvemos un false
-		Debug.Log (conditionName + " - son los padres (no existe)");
+		
+		//Debug.Log (conditionName + " - son los padres (no existe)");
+		
 		return false;
 	}
 

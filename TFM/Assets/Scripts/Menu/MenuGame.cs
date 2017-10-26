@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/* CREADO POR ANTONIO VILLENA */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -13,6 +15,7 @@ public class MenuGame : MonoBehaviour {
 	public bool menuPauseActive;
 	public bool menuEndActive;
 
+	public GameObject persistentMenu;
 	public GameObject playMenu;
 	public GameObject pauseMenu;
 	public GameObject endMenu;
@@ -26,11 +29,13 @@ public class MenuGame : MonoBehaviour {
 		//Inicialmente bloqueamos el cursor al cargar el objeto que tenga asignado este script
 		Cursor.lockState = CursorLockMode.Locked;
 		lockCursor = true;
+		persistentMenu = GameObject.Find("PersistentCanvas");
 	}
 
 	void Update () {
 
 		if (menuEndActive) {
+			persistentMenu.SetActive (false);
 			pauseMenu.SetActive (false);
 			playMenu.SetActive (false);
 			endMenu.SetActive (true);
@@ -48,6 +53,7 @@ public class MenuGame : MonoBehaviour {
 		if (Input.GetButtonDown ("Pause")) {
 
 			if (Time.timeScale > 0) {
+			AudioManager.AM.PlaySound2D ("Rune");
 				Time.timeScale = 0;
 			} else {
 				Time.timeScale = 1;
@@ -73,6 +79,7 @@ public class MenuGame : MonoBehaviour {
 	void Menu(){
 
 		if (menuPauseActive) {
+			persistentMenu.SetActive (false);
 			pauseMenu.SetActive (true);
 			playMenu.SetActive (false);
 			endMenu.SetActive (false);
@@ -82,6 +89,7 @@ public class MenuGame : MonoBehaviour {
 			stickIsMoving = false;
 			mouseIsMoving = false;
 			pauseMenu.SetActive (false);
+			persistentMenu.SetActive (true);
 			playMenu.SetActive (true);
 		}
 	}
@@ -119,11 +127,13 @@ public class MenuGame : MonoBehaviour {
 	}
 
 	public void ChangeControllerHover(GameObject newHover){
+		AudioManager.AM.PlaySound2D ("MenuSelect");
 		ES.SetSelectedGameObject (newHover);
 	}
 
 	public void Pause() {
 		//pausa la escena
+		persistentMenu.SetActive (false);
 		playMenu.SetActive (false);
 		pauseMenu.SetActive (true);
 		Time.timeScale = 0;
@@ -131,10 +141,12 @@ public class MenuGame : MonoBehaviour {
 
 	public void Resume() {
 		//reanuda la escena
+		AudioManager.AM.PlaySound2D ("MenuButton");
 		lockCursor = true;
 		stickIsMoving = false;
 		mouseIsMoving = false;
 		menuPauseActive = false;
+		persistentMenu.SetActive (true);
 		playMenu.SetActive (true);
 		pauseMenu.SetActive (false);
 		Time.timeScale = 1;
@@ -142,6 +154,7 @@ public class MenuGame : MonoBehaviour {
 
 	public void Retry() {
 		//recarga la escena
+		AudioManager.AM.PlaySound2D ("MenuButton");
 		Time.timeScale = 1;
 
 		playMenu.SetActive (false);
@@ -153,6 +166,7 @@ public class MenuGame : MonoBehaviour {
 	}
 
 	public void Quit() {
+		AudioManager.AM.PlaySound2D ("MenuButton");
 		Application.Quit();
 	}
 }

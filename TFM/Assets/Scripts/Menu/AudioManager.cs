@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/* CREADO POR MIGUEL CASADO */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,6 +34,7 @@ public class AudioManager : MonoBehaviour {
 				GameObject newMusicSource = new GameObject ("MusicSource" + (i + 1));
 				musicSources [i] = newMusicSource.AddComponent<AudioSource> ();
 				newMusicSource.transform.parent = transform;
+				musicSources[i].GetComponent<AudioSource>().loop = true;
 			}
 
 			GameObject newSfx2DSource = new GameObject ("Sfx2DSource");

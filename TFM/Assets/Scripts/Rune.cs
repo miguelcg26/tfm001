@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/* CREADO POR MIGUEL CASADO */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +17,8 @@ public class Rune : MonoBehaviour {
 			if (!check) {
 				GetComponent<Renderer> ().material = checker;
 
-				if (!endRune) {
+				if (!endRune) {					
+					AudioManager.AM.PlaySound ("Rune", transform.position);
 					ActivateRune (nextRune);
 					GameObject.Find ("CenterBlip").GetComponent<BlipObject> ().Target = nextRune.transform;
 					check = true;

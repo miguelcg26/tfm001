@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿/* CREADO POR MIGUEL CASADO */
+
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;

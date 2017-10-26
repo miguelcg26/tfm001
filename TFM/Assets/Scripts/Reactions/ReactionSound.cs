@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿/* CREADO POR MIGUEL CASADO */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +13,6 @@ public class ReactionSound : Reaction {
 		//Realizamos la espera
 		yield return new WaitForSeconds (delay);
 
-		AudioManager.AM.PlaySound2D ("MenuButton");
+		AudioManager.AM.PlaySound2D ("EndLevel");
 	}
 }

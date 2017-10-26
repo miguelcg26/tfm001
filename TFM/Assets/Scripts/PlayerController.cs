@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿/* CREADO POR MIGUEL CASADO */
+
+using UnityEngine;
 using System;
 using System.Collections;
 
@@ -400,6 +402,7 @@ public class PlayerController : MonoBehaviour
 		
 
 	void OnCollisionEnter(Collision col){
+		
 		if (col.collider.tag == "Branch") {
 
 			freeFall = false;
@@ -430,7 +433,7 @@ public class PlayerController : MonoBehaviour
 			if (onTrunk && !onBranch || onSubBranch && !onBranch) {
 				ContactPoint[] cont = col.contacts;
 				normalUp = cont [0].normal;
-				Debug.Log (col.collider.tag);
+				//Debug.Log (col.collider.tag);
 				transform.rotation = Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation;
 			}
 			
@@ -468,7 +471,7 @@ public class PlayerController : MonoBehaviour
 			if (onTrunk && !onSubBranch || onBranch && !onSubBranch) {
 				ContactPoint[] cont = col.contacts;
 				normalUp = cont [0].normal;
-				Debug.Log (col.collider.tag);
+				//Debug.Log (col.collider.tag);
 				transform.rotation = Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation;
 			}
 
@@ -506,7 +509,7 @@ public class PlayerController : MonoBehaviour
 			if (!onTrunk && onBranch || !onTrunk && onSubBranch) {
 				ContactPoint[] cont = col.contacts;
 				normalUp = cont [0].normal;
-				Debug.Log (col.collider.tag);
+				//Debug.Log (col.collider.tag);
 				transform.rotation = Quaternion.FromToRotation (transform.up, normalUp) * transform.rotation;
 
 			}
@@ -526,7 +529,7 @@ public class PlayerController : MonoBehaviour
 				rigidBody.useGravity = true;
 				grounded = false;
 				rigidBody.drag = 2;
-				Debug.Log ("vv");
+				//Debug.Log ("vv");
 
 			}
 		}
@@ -626,7 +629,7 @@ public class PlayerController : MonoBehaviour
 
 		}
 	}
-	IEnumerator AttractorChangerBranch(){
+	IEnumerator AttractorChangerBranch(){		
 		isVertical = false;
 		yield return new WaitForSeconds (1f);
 		onTrunk = false;
